@@ -1,0 +1,219 @@
+<!--
+The MIT License (MIT)
+
+Copyright (c) 2015 Ran Rana
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.
+-->
+<!DOCTYPE HTML>
+<html>
+<head>
+	<meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+	<title>Ran.codes - I do!</title>
+	<link rel="stylesheet" href="includes/bootstrap/css/bootstrap.min.css" type="text/css">
+	<link rel="stylesheet" href="includes/styles.css" type="text/css">
+
+</head>
+<body onload="inputFocus()">
+	<div class="container">
+		<div id="contentWrapper" class="col-xs-10 col-xs-offset-1 col-lg-6 col-lg-offset-3">
+			<div id="content">
+				<header>
+					<h1>Ran Rana</h1>
+				</header>
+				<div id="intro">
+					<p>Hi and welcome to my site! My name's Ran Rana and I'm currently a Computer Science student at King's College London, as well as the Communications Lead of the KCL Tech Society.</p>
+
+					<noscript>
+						<p class="disclaimer">It seems you're not using JavaScript, and that's cool. I made this website primarily in JS so that I could emulate a terminal environment that accepts commands to display information about myself. Please enable JavaScript to see it. Otherwise, I've got an alternative implementation for non-JS users. Just click here to see it: <a href="#">Non-JS version</a></p>
+					</noscript>
+
+					<p>To get started, please type in the command <span class="keyword">h</span> or <span class="keyword">help</span>, followed by the 'enter' key, to see a list of further available commands.</p>
+				</div>
+				<div id="terminalBody">
+				</div>
+				<div class="commandLine">
+					<table>
+						<tr>
+							<td class="left"><span id="user" class="user">Ran.codes:~ visitor$ </span></td>
+							<td class="right">
+								<input type="text" id="commandLine" class="cmdln" name="command" onkeydown="executeCmd(event)"/>
+							</td>
+						</tr>
+					</table>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
+	<script src="includes/boostrap/js/bootstrap.min.js"></script>
+
+	<script type="text/javascript">
+    	var user = 'visitor';
+		var spanuser = document.getElementById('user');
+		var commandList = [];
+		var upLimit = 0;
+		var commLine = "";
+		var comm = "";
+		var termBody = "";
+		var message = "";
+		var cmd = "";
+		var siteName = 'Ran.codes';
+
+		function inputFocus() {
+			spanuser.innerHTML = siteName + ':~ ' + user + '$ ';
+			document.getElementById('commandLine').focus();
+		}
+
+		function executeCmd(e) {
+			e = e || window.event;
+		    if ((e.which == 13) || (e.keyCode == 13))
+		    {
+				commLine = document.getElementById('commandLine');
+				comm = '<div class="terminalCommand"><span class="user">' + siteName + ':~ ' + user + '$ </span>' + '<span class="command">' + commLine.value + '</span></div>';
+				termBody = document.getElementById('terminalBody');
+				message = "";
+				cmd = commLine.value.split(" ");
+
+				commandList.push(commLine.value);
+
+
+				switch(cmd[0].toUpperCase())
+				{
+					case "NAME":
+					user = cmd[1];
+					if(user)
+					{
+						spanuser.innerHTML = siteName + ':~ ' + user + '$ ';
+						message = "<div class='terminalMessage'>User set to '" + user + "'</div>";
+					}
+					else
+					{
+						spanuser.innerHTML = siteName + ':~ ' + user + '$ ';
+						message = "<div class='terminalMessage'>User set to 'visitor'</div>";
+					}
+					break;
+
+					case "H":
+					message = "<div class='terminalMessage'>";
+					message += "====<br />HELP<br />====";
+					message += "<p><span class='keyword'>ls</span> (lower case L): See commands for available 'pages'</p>";
+					message += "<p><span class='keyword'>name yourname</span>: Change the user from 'visitor$' to 'yourname$'. For example, 'name Ran' would change it to <span class='user'>" + siteName + ":~ Ran$</span></p>";
+					message += "<p><span class='keyword'>up/down arrows</span>: Cycle through previously entered commands</p>";
+					message += "<p><span class='keyword'>clear</span>: Clear all displayed data from the terminal. Up/Down still cycles through previous commands.</p>";
+					message += "</div>";
+					break;
+
+					case "HELP":
+					message = "<div class='terminalMessage'>";
+					message += "====<br />HELP<br />====";
+					message += "<p><span class='keyword'>ls</span> (lower case L): See commands for available 'pages'</p>";
+					message += "<p><span class='keyword'>name yourname</span>: Change the user from 'visitor$' to 'yourname$'. For example, 'name Ran' would change it to <span class='user'>" + siteName + ":~ Ran$</span></p>";
+					message += "<p><span class='keyword'>up/down arrows</span>: Cycle through previously entered commands</p>";
+					message += "<p><span class='keyword'>clear</span>: Clear all displayed data from the terminal. Up/Down still cycles through previous commands.</p>";
+					message += "</div>";
+					break;
+
+					case "LS":
+					message = "<div class='terminalMessage'>";
+					message += "=====<br />PAGES<br />=====";
+					message += "<p><span class='keyword'>about</span>: General information about me</p>";
+					message += "<p><span class='keyword'>education</span>: My educational history</p>";
+					message += "</div>";
+					break;
+
+					case "ABOUT":
+					message = "<div class='terminalMessage'>";
+					message += "========<br />ABOUT ME</br />========";
+					message += "<p>I'm the Communications Lead of the KCL Tech Society.</p>";
+					message += "<p>I enjoy working with Java, HTML, CSS, JavaScript, MySQL, PHP, and Ruby on Rails.</p>";
+					message += "<p>I love learning new languages and skills, and am looking to learn C++ next. In the past, in my spare time, I have learned to make games using the Unity game engine and C# language.</p>";
+					message += "</div>";
+					break;
+
+					case "EDUCATION":
+					message = "<div class='terminalMessage'>=========<br />EDUCATION<br >=========";
+					message += "<p>King's College London, 2014 - 2018<br />BSc (Hons) Computer Science</p>";
+					message += "<p>Ealing, Hammersmith & West London College<br />Higher National Diploma in Computing and Systems Development</p>";
+					message += "<p>Latymer Upper School<br />7 GCSEs, A - C</p>";
+					message += "</div>";
+					break;
+
+					case "EXPERIENCE":
+					message = "<div class='terminalMessage'>Feel free to email me!</div>";
+					break;
+
+					case "CONTACT":
+					message = "<div class='terminalMessage'><p>Email:</p><p></p><p></p></div>";
+					break;
+
+					case "LINKS":
+					message = "<div class='terminalMessage'>Feel free to email me!</div>";
+					break;
+
+					case "CLEAR":
+					message = "";
+					break;
+
+					default:
+					message = "<div class='terminalMessage'>Unrecognised command. For a list of commands, enter <span class='keyword'>h</span> or <span class='keyword'>help</span>.</div>";
+				}
+
+				termBody.innerHTML += comm;
+				if(cmd[0].toUpperCase() == 'CLEAR')
+				{
+					termBody.innerHTML = message;
+				}
+				else
+				{
+					termBody.innerHTML += message;
+				}
+				commLine.value = "";
+
+				termBody.scrollTop = termBody.scrollHeight;
+
+				upLimit = 0;
+			}
+			else if ((e.which == 38) || (e.keyCode == 38))
+		    {
+				commLine.value = "";
+				if(upLimit <= commandList.length -1)
+				{
+					upLimit++;
+					commLine.value = commandList[commandList.length-upLimit];
+				}
+			}
+			else if ((e.which == 40) || (e.keyCode == 40))
+		    {
+				commLine.value = "";
+				if(upLimit >= 1)
+				{
+					commLine.value = commandList[commandList.length-upLimit];
+					upLimit--;
+				}
+			}
+
+		}
+
+	</script>
+</body>
+</html>
